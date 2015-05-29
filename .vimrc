@@ -17,8 +17,6 @@ set laststatus=2
 
 " Highlight current line
 set cursorline
-hi CursorLine cterm=none ctermbg=darkblue
-hi CursorLineNR ctermbg=darkmagenta
 
 " Highlight all search occurences
 set hlsearch
@@ -26,4 +24,20 @@ hi Search ctermbg=darkred ctermfg=white
 
 " Enable incremental search
 set incsearch
+
+" Surround word with symbols
+nnoremap ," wbi"<Esc>ea"<Esc>
+nnoremap ,' wbi'<Esc>ea'<Esc>
+nnoremap ,( wbi(<Esc>ea)<Esc>
+nnoremap ,[ wbi[<Esc>ea]<Esc>
+nnoremap ,{ wbi{<Esc>ea}<Esc>
+nnoremap ,< wbi<<Esc>ea><Esc>
+nnoremap ,x wbhxelx
+
+" Plugin configuration
+execute pathogen#infect()
+
+" vim-airline
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
 
