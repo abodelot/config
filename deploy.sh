@@ -14,3 +14,8 @@ git clone --depth=1 https://github.com/bling/vim-airline.git
 git clone --depth=1 https://github.com/airblade/vim-gitgutter.git
 git clone --depth=1 https://github.com/tpope/vim-surround.git
 
+# Terminator
+# ------------------------------------------------------------------------------
+
+cp --parents terminator/config ~/.config
+
