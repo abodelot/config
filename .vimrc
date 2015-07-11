@@ -2,6 +2,7 @@
 " ------------------------------------------------------------------------------
 
 " Enable 256 colors in terminal
+syntax on
 colorscheme elflord
 set t_Co=256
 
@@ -35,12 +36,8 @@ set hlsearch
 set incsearch
 
 " Set colorcolumn for column beyond 80
-let &colorcolumn=join(range(81, 256), ",")
+set colorcolumn=81
 hi ColorColumn ctermbg=235
-
-" Show trailing whitespaces
-set list
-set listchars=trail:·
 
 " Remove trailing whitespaces
 autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
@@ -53,6 +50,8 @@ nnoremap <Tab> a<C-t><Esc>
 nnoremap <S-Tab> a<C-d><Esc>
 vnoremap <Tab> >
 vnoremap <S-Tab> <
+
+nnoremap <Space>w viw
 
 " Fill rest of line with characters
 function! FillLine(str)
@@ -73,6 +72,9 @@ inoremap <F12> <Esc>:call FillLine('-')<CR>o
 
 " Initialize plugin loader
 execute pathogen#infect()
+
+" Detect indentation
+autocmd BufReadPost * :DetectIndent
 
 " vim-airline
 let g:airline_left_sep = '▶'
