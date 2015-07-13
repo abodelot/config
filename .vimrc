@@ -87,3 +87,7 @@ nmap <Space>( ysiw)
 nmap <Space>[ ysiw]
 nmap <Space>{ ysiw{
 
+" vim-ctrlp
+let g:ctrlp_custom_ignore = {'dir': '\v[\/](\.git|node_modules|build|coverage)$'}
+
+

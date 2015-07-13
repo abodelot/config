@@ -1,7 +1,14 @@
+#!/bin/bash
+
+C_GREEN="\033[1;32m"
+C_YELLOW="\033[1;33m"
+C_RESET="\033[0m"
+
 # Bash
 # ------------------------------------------------------------------------------
 
-cp .bashrc ~/.bashrc
+echo -e "${C_GREEN}* bash${C_RESET}"
+cp .bashrc ~/.bashrc -v
 
 # Terminator
 # ------------------------------------------------------------------------------
@@ -12,11 +19,16 @@ cp .bashrc ~/.bashrc
 # ------------------------------------------------------------------------------
 
 # Copy vim settings
-cp .vimrc ~/.vimrc
+echo -e "${C_GREEN}* vim${C_RESET}"
+cp .vimrc ~/.vimrc -v
 
 # Download plugin manager (pathogen)
-mkdir -p ~/.vim/autoload ~/.vim/bundle
-wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
+if [ -f ~/.vim/autoload/pathogen.vim ]; then
+    echo vim pathogen already installed
+else
+    mkdir -p ~/.vim/autoload ~/.vim/bundle
+    wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
+fi
 
 # Vim plugins repositories
 vim_plugins=(
@@ -24,17 +36,19 @@ vim_plugins=(
     https://github.com/airblade/vim-gitgutter.git
     https://github.com/tpope/vim-surround.git
     https://github.com/ciaranm/detectindent.git
+    https://github.com/kien/ctrlp.vim.git
 )
 
 # Install plugins if not present
 cd ~/.vim/bundle
 for url in ${vim_plugins[@]}
 do
-    dir_name=`basename $url | sed 's/.git$//'`
-    echo -e "\033[1;32m* $dir_name\033[0m"
-    if [ ! -d $dir_name ]; then
-        git clone --depth=1 $url $dir_name
+    plugin_name=`basename $url | sed 's/.git$//'`
+    if [ -d $plugin_name ]; then
+        echo "${plugin_name} already installed"
     else
-        echo $dir_name already exists
+        echo -e "${C_YELLOW}installing vim plugin: ${plugin_name}${C_RESET}"
+        git clone --depth=1 $url $plugin_name
     fi
 done
+
