@@ -10,6 +10,12 @@ C_RESET="\033[0m"
 echo -e "${C_GREEN}* bash${C_RESET}"
 cp .bashrc ~/.bashrc -v
 
+# Git
+# ------------------------------------------------------------------------------
+
+echo -e "{C_GREEN}* git${C_RESET}"
+cp .gitconfig ~/.gitconfig -v
+
 # Terminator
 # ------------------------------------------------------------------------------
 
