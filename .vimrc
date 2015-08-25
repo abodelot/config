@@ -45,13 +45,31 @@ autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 " Keybindings
 " ------------------------------------------------------------------------------
 
+" Navigate between layouts with Ctrl + Arrows
+nnoremap <C-Down> <C-W><C-J>
+nnoremap <C-Up> <C-W><C-K>
+nnoremap <C-Left> <C-W><C-H>
+nnoremap <C-Right> <C-W><C-L>
+
 " Indent/unindent with tab without moving cursor
 nnoremap <Tab> a<C-t><Esc>
 nnoremap <S-Tab> a<C-d><Esc>
 vnoremap <Tab> >
 vnoremap <S-Tab> <
 
-nnoremap <Space>w viw
+" Select word under cursor
+nnoremap ,w viw
+
+" Insert header guards
+function! CppHeader()
+    let guardname = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+    execute "normal! i#ifndef " . guardname
+    execute "normal! o#define " . guardname . " "
+    execute "normal! Go#endif // " . guardname . " "
+    normal! kk
+endfunction
+
+nnoremap ,h :call CppHeader()<CR>
 
 " Fill rest of line with characters
 function! FillLine(str)
@@ -64,11 +82,10 @@ function! FillLine(str)
     endif
 endfunction
 
-nnoremap <F12> :call FillLine('-')<CR>
-inoremap <F12> <Esc>:call FillLine('-')<CR>o
+nnoremap ,- :call FillLine('-')<CR>
 
 " Plugin configuration
-" ----------------------------------------------------------------------------
+" ------------------------------------------------------------------------------
 
 " Initialize plugin loader
 execute pathogen#infect()
@@ -88,6 +105,6 @@ nmap <Space>[ ysiw]
 nmap <Space>{ ysiw{
 
 " vim-ctrlp
-let g:ctrlp_custom_ignore = {'dir': '\v[\/](\.git|node_modules|build|coverage)$'}
+let g:ctrlp_custom_ignore = {'dir': '\v[\/](\.git|node_modules|build|coverage|obj)$'}
 
 
