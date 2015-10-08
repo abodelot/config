@@ -13,8 +13,15 @@ cp .bashrc ~/.bashrc -v
 # Git
 # ------------------------------------------------------------------------------
 
-echo -e "{C_GREEN}* git${C_RESET}"
+echo -e "${C_GREEN}* git${C_RESET}"
 cp .gitconfig ~/.gitconfig -v
+
+
+# Tint2
+# ------------------------------------------------------------------------------
+
+echo -e "${C_GREEN}* tint2${C_RESET}"
+cp -Rv tint2 ~/.config/
 
 # Terminator
 # ------------------------------------------------------------------------------
@@ -57,4 +64,5 @@ do
         git clone --depth=1 $url $plugin_name
     fi
 done
+
 

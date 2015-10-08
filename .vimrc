@@ -42,6 +42,8 @@ hi ColorColumn ctermbg=235
 " Remove trailing whitespaces
 autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
+set autowriteall
+
 " Keybindings
 " ------------------------------------------------------------------------------
 
@@ -59,6 +61,22 @@ vnoremap <S-Tab> <
 
 " Select word under cursor
 nnoremap ,w viw
+
+" Tab completion
+" will insert tab at beginning of line,
+" will use completion if not at beginning
+set wildmode=list:longest,list:full
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+
+inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <S-Tab> <c-n>
 
 " Insert header guards
 function! CppHeader()
@@ -105,6 +123,9 @@ nmap <Space>[ ysiw]
 nmap <Space>{ ysiw{
 
 " vim-ctrlp
-let g:ctrlp_custom_ignore = {'dir': '\v[\/](\.git|node_modules|build|coverage|obj)$'}
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|node_modules|build|coverage|obj)$',
+  \ 'file': '\v\.(o)$',
+  \ }
 
 
