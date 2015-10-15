@@ -116,6 +116,7 @@ fi
 # aliases
 alias rake='bundle exec rake'
 alias rails='bundle exec rails'
+alias rspec='bundle exec rspec'
 
 # rbenv init
 export PATH="$HOME/.rbenv/bin:$PATH"
