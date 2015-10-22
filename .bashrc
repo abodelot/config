@@ -91,6 +91,10 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 alias l='ls -CF'
 alias ..='cd ..'
 alias sl='ls'
+
+# Git
+alias git-clear-merged='git branch --merged | grep -vE "^\*\smaster$" | xargs -n 1 git branch -d'
+
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
