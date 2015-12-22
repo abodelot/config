@@ -9,7 +9,8 @@ C_RESET="\033[0m"
 
 DeployBash() {
     echo -e "${C_GREEN}* bash${C_RESET}"
-    cp .bashrc ~/.bashrc -v
+    rm ~/.bashrc
+    ln -sv $(pwd)/bashrc ~/.bashrc
 }
 
 DeployGit() {
