@@ -29,9 +29,10 @@ DeployTint2() {
 }
 
 DeployVim() {
-    # Copy vim settings
+    # Symlink vim settings
     echo -e "${C_GREEN}* vim${C_RESET}"
-    cp .vimrc ~/.vimrc -v
+    rm ~/.vimrc
+    ln -sv $(pwd)/vimrc ~/.vimrc
 
     # Download plugin manager (pathogen)
     if [ -f ~/.vim/autoload/pathogen.vim ]; then
@@ -46,7 +47,6 @@ DeployVim() {
         https://github.com/bling/vim-airline.git
         https://github.com/airblade/vim-gitgutter.git
         https://github.com/tpope/vim-surround.git
-        https://github.com/ciaranm/detectindent.git
         https://github.com/kien/ctrlp.vim.git
     )
 

@@ -14,6 +14,11 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" 2 spaces
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
+autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+
 " Show line numbers
 set number
 
@@ -78,17 +83,6 @@ endfunction
 inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <S-Tab> <c-n>
 
-" Insert header guards
-function! CppHeader()
-    let guardname = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-    execute "normal! i#ifndef " . guardname
-    execute "normal! o#define " . guardname . " "
-    execute "normal! Go#endif // " . guardname . " "
-    normal! kk
-endfunction
-
-nnoremap ,h :call CppHeader()<CR>
-
 " Fill rest of line with characters
 function! FillLine(str)
     let tw = 81
@@ -108,9 +102,6 @@ nnoremap ,- :call FillLine('-')<CR>
 " Initialize plugin loader
 execute pathogen#infect()
 
-" Detect indentation
-autocmd BufReadPost * :DetectIndent
-
 " vim-airline
 let g:airline_left_sep = '▶'
 let g:airline_right_sep = '◀'
@@ -127,5 +118,4 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|node_modules|build|coverage|obj)$',
   \ 'file': '\v\.(o)$',
   \ }
-
 
