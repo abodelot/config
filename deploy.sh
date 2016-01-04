@@ -15,7 +15,8 @@ DeployBash() {
 
 DeployGit() {
     echo -e "${C_GREEN}* git${C_RESET}"
-    cp .gitconfig ~/.gitconfig -v
+    rm ~/.gitconfig
+    ln -sv $(pwd)/gitconfig ~/.gitconfig
 }
 
 DeployTerminator() {
@@ -48,6 +49,9 @@ DeployVim() {
         https://github.com/airblade/vim-gitgutter.git
         https://github.com/tpope/vim-surround.git
         https://github.com/kien/ctrlp.vim.git
+        https://github.com/jiangmiao/auto-pairs
+        https://github.com/alvan/vim-closetag
+        https://github.com/henrik/vim-indexed-search
     )
 
     # Install plugins if not present

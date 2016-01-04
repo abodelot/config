@@ -18,6 +18,7 @@ set expandtab
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+autocmd Filetype css setlocal ts=2 sts=2 sw=2
 
 " Show line numbers
 set number
@@ -48,6 +49,7 @@ hi ColorColumn ctermbg=235
 autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 set autowriteall
+autocmd InsertLeave * update
 
 " Keybindings
 " ------------------------------------------------------------------------------
@@ -118,4 +120,7 @@ let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|node_modules|build|coverage|obj)$',
   \ 'file': '\v\.(o)$',
   \ }
+
+" closetag
+let g:closetag_filenames = "*.html,*.xml,*.erb"
 

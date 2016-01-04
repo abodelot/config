@@ -117,6 +117,8 @@ fi
 # Ruby on Rails
 # ------------------------------------------------------------------------------
 
+export RAILS_LOGGER=default
+
 # aliases
 alias rake='bundle exec rake'
 alias rails='bundle exec rails'
