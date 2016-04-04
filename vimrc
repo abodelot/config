@@ -14,11 +14,12 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" 2 spaces
+" 2 spaces for ruby/web
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 autocmd Filetype css setlocal ts=2 sts=2 sw=2
+autocmd Filetype scss setlocal ts=2 sts=2 sw=2
 
 " Show line numbers
 set number
@@ -65,6 +66,10 @@ nnoremap <Tab> a<C-t><Esc>
 nnoremap <S-Tab> a<C-d><Esc>
 vnoremap <Tab> >
 vnoremap <S-Tab> <
+
+
+vnoremap <C-c> "+y
+nnoremap <C-v> "+p
 
 " Select word under cursor
 nnoremap ,w viw

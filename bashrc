@@ -129,3 +129,13 @@ alias sidekiq='bundle exec sidekiq'
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# NodeJS
+# ------------------------------------------------------------------------------
+
+export PATH="$PATH:/opt/node-v5.1.0/bin"
+
+# Go
+# ------------------------------------------------------------------------------
+
+export PATH="$PATH:/usr/local/go/bin"
+
