@@ -29,6 +29,13 @@ DeployTint2() {
     cp -Rv tint2 ~/.config/
 }
 
+DeployI3() {
+    echo -e "${C_GREEN}* i3${C_RESET}"
+    mkdir -p ~/.i3
+    rm ~/.i3/config
+    ln -sv $(pwd)/i3config ~/.i3/config
+}
+
 DeployVim() {
     # Symlink vim settings
     echo -e "${C_GREEN}* vim${C_RESET}"
@@ -84,6 +91,8 @@ case $1 in
         DeployGit;;
     'tint2')
         DeployTint2;;
+    'i3')
+        DeployI3;;
     'terminator')
         DeployTerminator;;
     'vim')
