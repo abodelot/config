@@ -20,6 +20,11 @@ autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 autocmd Filetype css setlocal ts=2 sts=2 sw=2
 autocmd Filetype scss setlocal ts=2 sts=2 sw=2
+autocmd Filetype coffee setlocal ts=2 sts=2 sw=2
+
+set hidden
+
+let mapleader = ","
 
 " Show line numbers
 set number
@@ -55,6 +60,9 @@ autocmd InsertLeave * update
 " Keybindings
 " ------------------------------------------------------------------------------
 
+nnoremap ll ^i// <Esc>
+nnoremap lm ^3x
+
 " Navigate between layouts with Ctrl + Arrows
 nnoremap <C-Down> <C-W><C-J>
 nnoremap <C-Up> <C-W><C-K>
@@ -67,9 +75,10 @@ nnoremap <S-Tab> a<C-d><Esc>
 vnoremap <Tab> >
 vnoremap <S-Tab> <
 
-
-vnoremap <C-c> "+y
-nnoremap <C-v> "+p
+" Cut/Copy/Paste
+nnoremap p "+gp
+vnoremap y "+y
+vnoremap x "+x
 
 " Select word under cursor
 nnoremap ,w viw
@@ -110,8 +119,10 @@ nnoremap ,- :call FillLine('-')<CR>
 execute pathogen#infect()
 
 " vim-airline
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '◀'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '◀'
+
+let g:airline_powerline_fonts = 1
 
 " vim-surround extra shortcuts
 nmap <Space>' ysiw'
@@ -129,3 +140,16 @@ let g:ctrlp_custom_ignore = {
 " closetag
 let g:closetag_filenames = "*.html,*.xml,*.erb"
 
+
+" rspec
+function! RSpecFile()
+  execute("!clear && bundle exec rspec " . expand("%p"))
+endfunction
+map <leader>R :call RSpecFile() <CR>
+command! RSpecFile call RSpecFile()
+
+function! RSpecCurrent()
+  execute("!clear && bundle exec rspec " . expand("%p") . ":" . line("."))
+endfunction
+map <leader>r :call RSpecCurrent() <CR>
+command! RSpecCurrent call RSpecCurrent()

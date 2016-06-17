@@ -114,6 +114,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
+fn_jsoncurl () {
+  echo curl -s $*
+  curl -s $* | python -m json.tool | pygmentize -l json
+}
+
+alias jsoncurl=fn_jsoncurl
 # Ruby on Rails
 # ------------------------------------------------------------------------------
 
@@ -130,12 +136,9 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 # NodeJS
-# ------------------------------------------------------------------------------
-
 export PATH="$PATH:/opt/node-v5.1.0/bin"
 
 # Go
-# ------------------------------------------------------------------------------
-
 export PATH="$PATH:/usr/local/go/bin"
+export GOPATH=$HOME/go
 
