@@ -26,14 +26,16 @@ DeployTerminator() {
 
 DeployTint2() {
     echo -e "${C_GREEN}* tint2${C_RESET}"
-    cp -Rv tint2 ~/.config/
+    mkdir -p ~/.config/tint2
+    rm ~/.config/tint2/tint2rc
+    ln -sv $(pwd)/tint2/tint2rc ~/.config/tint2/tint2rc
 }
 
 DeployI3() {
     echo -e "${C_GREEN}* i3${C_RESET}"
     mkdir -p ~/.i3
     rm ~/.i3/config
-    ln -sv $(pwd)/i3config ~/.i3/config
+    ln -sv $(pwd)/i3/config ~/.i3/config
 }
 
 DeployVim() {
