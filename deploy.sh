@@ -21,6 +21,9 @@ DeployGit() {
 
 DeployTerminator() {
     echo -e "${C_GREEN}* terminator${C_RESET}"
+    mkdir -p ~/.config/terminator
+    rm ~/.config/terminator/config
+    ln -sv $(pwd)/terminator/config ~/.config/terminator/config
     cp -Rv terminator ~/.config
 }
 
@@ -84,6 +87,7 @@ case $1 in
     'all')
         DeployBash
         DeployGit
+        DeployI3
         DeployTint2
         DeployTerminator
         DeployVim;;
@@ -91,15 +95,15 @@ case $1 in
         DeployBash;;
     'git')
         DeployGit;;
-    'tint2')
-        DeployTint2;;
     'i3')
         DeployI3;;
+    'tint2')
+        DeployTint2;;
     'terminator')
         DeployTerminator;;
     'vim')
         DeployVim;;
     *)
-        echo "Usage: $0 {bash|git|tint2|terminator|vim}"
+        echo "Usage: $0 {all|bash|git|i3|tint2|terminator|vim}"
 esac
 
