@@ -24,7 +24,6 @@ DeployTerminator() {
     mkdir -p ~/.config/terminator
     rm ~/.config/terminator/config
     ln -sv $(pwd)/terminator/config ~/.config/terminator/config
-    cp -Rv terminator ~/.config
 }
 
 DeployTint2() {

@@ -1,33 +1,31 @@
 [global_config]
-  title_transmit_bg_color = "#ab1e3e"
-  title_inactive_fg_color = "#b0c4d4"
-  title_transmit_fg_color = "#ffe9e9"
   title_inactive_bg_color = "#121517"
+  title_inactive_fg_color = "#b0c4d4"
+  title_transmit_bg_color = "#ab1e3e"
+  title_transmit_fg_color = "#ffe9e9"
 [keybindings]
-[profiles]
-  [[default]]
-    scrollbar_position = hidden
-    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
-    background_image = None
-    background_darkness = 0.0
-    scrollback_lines = 5000
-    use_system_font = False
-    split_to_group = True
-    scroll_on_output = False
-    icon_bell = False
-    cursor_color = "#cddbe6"
-    color_scheme = custom
-    font = DejaVu Sans Mono 14
-    allow_bold = False
-    scrollback_infinite = True
 [layouts]
   [[default]]
     [[[child1]]]
-      type = Terminal
       parent = window0
       profile = default
+      type = Terminal
     [[[window0]]]
-      type = Window
       parent = ""
       size = 820, 420
+      type = Window
 [plugins]
+[profiles]
+  [[default]]
+    allow_bold = False
+    background_darkness = 0.0
+    color_scheme = custom
+    cursor_color = "#cddbe6"
+    font = DejaVu Sans Mono 16
+    icon_bell = False
+    palette = "#000000:#cc0000:#4e9a06:#c4a000:#3465a4:#75507b:#06989a:#d3d7cf:#555753:#ef2929:#8ae234:#fce94f:#729fcf:#ad7fa8:#34e2e2:#eeeeec"
+    scrollback_infinite = True
+    scrollback_lines = 5000
+    show_titlebar = False
+    split_to_group = True
+    use_system_font = False
