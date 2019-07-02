@@ -7,15 +7,10 @@ set $alt Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-# Before i3 v4.8, we used to recommend this one as the default:
-font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-#font pango:DejaVu Sans Mono 10
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
+font pango:DejaVu Sans Mono 14
+
+# Window border width (pixels)
+new_window normal 5
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -24,10 +19,10 @@ floating_modifier $mod
 bindsym $alt+F4 kill
 
 # change focus
-#bindsym $mod+j focus left
-#bindsym $mod+k focus down
-#bindsym $mod+l focus up
-#bindsym $mod+m focus right
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus up
+bindsym $mod+m focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -72,7 +67,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+q focus parent
+#bindsym $mod+q focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -88,6 +83,10 @@ bindsym $mod+egrave workspace 7
 bindsym $mod+underscore workspace 8
 bindsym $mod+ccedilla workspace 9
 bindsym $mod+agrave workspace 10
+
+bindsym $mod+Next workspace next
+bindsym $mod+Prior workspace prev
+
 
 # move focused container to workspace
 bindsym $mod+Shift+ampersand move container to workspace 1
@@ -112,10 +111,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 mode "resize" {
     # These bindings trigger as soon as you enter the resize mode
 
-    # Pressing left will shrink the window’s width.
-    # Pressing right will grow the window’s width.
-    # Pressing up will shrink the window’s height.
-    # Pressing down will grow the window’s height.
+    # Pressing left will shrink the window's width.
+    # Pressing right will grow the window's width.
+    # Pressing up will shrink the window's height.
+    # Pressing down will grow the window's height.
     bindsym j resize shrink width 10 px or 10 ppt
     bindsym k resize grow height 10 px or 10 ppt
     bindsym l resize shrink height 10 px or 10 ppt
@@ -138,12 +137,11 @@ bindsym $mod+r mode "resize"
 # Taskbar
 # ------------------------------------------------------------------------------
 
-#binding_mode_indicator yes
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    # font pango:DejaVu Sans 12
-    font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+    font pango:DejaVu Sans Mono 14
+    #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
     status_command i3status
     binding_mode_indicator yes
     colors {
@@ -153,20 +151,15 @@ bar {
         focused_workspace  #2E64B3 #3879D9 #ffffff
         inactive_workspace #cccccc #dddddd #888888
         urgent_workspace   #2f343a #900000 #ffffff
-        # binding_mode       #2f343a #900000 #ffffff
+        binding_mode       #2f343a #900000 #ffffff
     }
 }
 
 # class                 border  backgr. text    indicator
-client.focused          #3879D9 #3879D9 #ffffff #ff00ff
+client.focused          #3879D9 #3879D9 #ffffff #00ff00
 client.focused_inactive #333333 #192848 #ffffff #484e50
 client.unfocused        #000000 #111111 #ffffff #2e9ef4
 client.urgent           #890015 #a91035 #ffffff #292d2e
-
-# Automatically put windows on specific workspaces
-assign [class="Pgadmin3"]    4
-assign [class="Rocket.Chat"] 5
-assign [class="Pidgin"]      6
 
 # Taskbar applets
 exec --no-startup-id clipit
@@ -189,24 +182,19 @@ bindsym XF86AudioPrev exec playerctl previous
 # Application launchers
 # ------------------------------------------------------------------------------
 
-# Autostart
-exec --no-startup-id pidgin
-exec --no-startup-id /opt/rocketchat/rocketchat
+# Start a terminal in last visited directory
+bindsym $mod+Return exec i3-sensible-terminal --working-directory="$(cat /tmp/whereami)"
 
-# start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
-
-# start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# Start dmenu (a program launcher)
+bindsym $mod+d exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -i -fn 'DejaVu Sans Mono:bold:pixelsize=20' -nb '#fdf6e3' -nf '#586c75' -sf '#fdf6e3' -sb '#b58900'"
 
 # Apps
 bindsym $mod+w exec x-www-browser
 bindsym $mod+x exec thunar
 
 # Screen locker
-bindsym XF86Sleep exec i3lock -c 000000
-bindsym $mod+l exec i3lock -c 000000
+bindsym XF86Sleep exec "~/.i3/lock.sh"
+bindsym $mod+Escape exec "~/.i3/lock.sh"
 
 # Print screen
 bindsym Print exec gnome-screenshot -i
-

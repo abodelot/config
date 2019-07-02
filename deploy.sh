@@ -38,6 +38,7 @@ DeployI3() {
     echo -e "${C_GREEN}* i3${C_RESET}"
     mkdir -p ~/.i3
     rm ~/.i3/config
+    ln -sv $(pwd)/i3/lock.sh ~/.i3/lock.sh
     ln -sv $(pwd)/i3/config ~/.i3/config
 }
 
