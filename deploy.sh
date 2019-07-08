@@ -16,7 +16,7 @@ DeployBash() {
 DeployGit() {
     echo -e "${C_GREEN}* git${C_RESET}"
     rm ~/.gitconfig
-    ln -sv $(pwd)/gitconfig ~/.gitconfig
+    ln -sv $(pwd)/git/gitconfig ~/.gitconfig
 }
 
 DeployTerminator() {
