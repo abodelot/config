@@ -41,43 +41,11 @@ DeployI3() {
     ln -sv $(pwd)/i3/config ~/.i3/config
 }
 
-DeployVim() {
-    # Symlink vim settings
-    echo -e "${C_GREEN}* vim${C_RESET}"
-    rm ~/.vimrc
-    ln -sv $(pwd)/vimrc ~/.vimrc
-
-    # Download plugin manager (pathogen)
-    if [ -f ~/.vim/autoload/pathogen.vim ]; then
-        echo vim pathogen already installed
-    else
-        mkdir -p ~/.vim/autoload ~/.vim/bundle
-        wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
-    fi
-
-    # Vim plugins repositories
-    vim_plugins=(
-        https://github.com/bling/vim-airline.git
-        https://github.com/airblade/vim-gitgutter.git
-        https://github.com/tpope/vim-surround.git
-        https://github.com/kien/ctrlp.vim.git
-        https://github.com/jiangmiao/auto-pairs
-        https://github.com/alvan/vim-closetag
-        https://github.com/henrik/vim-indexed-search
-    )
-
-    # Install plugins if not present
-    cd ~/.vim/bundle
-    for url in ${vim_plugins[@]}
-    do
-        plugin_name=`basename $url | sed 's/.git$//'`
-        if [ -d $plugin_name ]; then
-            echo "${plugin_name} already installed"
-        else
-            echo -e "${C_YELLOW}installing vim plugin: ${plugin_name}${C_RESET}"
-            git clone --depth=1 $url $plugin_name
-        fi
-    done
+DeployNeoVim() {
+    echo -e "${C_GREEN}* neovim${C_RESET}"
+    mkdir -p ~/.config/nvim
+    rm ~/.config/nvim/init.vim
+    ln -sv $(pwd)/neovim/init.vim ~/.config/nvim/init.vim
 }
 
 # Parse args
@@ -90,7 +58,7 @@ case $1 in
         DeployI3
         DeployTint2
         DeployTerminator
-        DeployVim;;
+        DeployNeoVim;;
     'bash')
         DeployBash;;
     'git')
@@ -101,9 +69,9 @@ case $1 in
         DeployTint2;;
     'terminator')
         DeployTerminator;;
-    'vim')
-        DeployVim;;
+    'nvim')
+        DeployNeoVim;;
     *)
-        echo "Usage: $0 {all|bash|git|i3|tint2|terminator|vim}"
+        echo "Usage: $0 {all|bash|git|i3|tint2|terminator|nvim}"
 esac
 
