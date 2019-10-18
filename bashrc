@@ -114,12 +114,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
-fn_jsoncurl () {
-  echo curl -s $*
-  curl -s $* | python -m json.tool | pygmentize -l json
-}
+# C/C++
 
-alias jsoncurl=fn_jsoncurl
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
+
 # Ruby on Rails
 # ------------------------------------------------------------------------------
 
@@ -131,14 +130,23 @@ alias rails='bundle exec rails'
 alias rspec='bundle exec rspec'
 alias sidekiq='bundle exec sidekiq'
 
-# rbenv init
+# rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+## pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
 # NodeJS
-export PATH="$PATH:/opt/node-v5.1.0/bin"
+export PATH="$PATH:/opt/node/bin"
 
 # Go
 export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/go
 
+eval `keychain --agents ssh --eval id_rsa --quiet`

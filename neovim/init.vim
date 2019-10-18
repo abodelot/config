@@ -112,6 +112,9 @@ nnoremap p "+gp
 vnoremap y "+y
 vnoremap x "+x
 
+nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
+nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
 " Tab completion
 " will insert tab at beginning of line,
 " will use completion if not at beginning
