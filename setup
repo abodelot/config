@@ -21,6 +21,7 @@ DeployGit() {
 
 DeployTerminator() {
     echo -e "${C_GREEN}* terminator${C_RESET}"
+    sudo apt install -y terminator
     mkdir -p ~/.config/terminator
     rm ~/.config/terminator/config
     ln -sv $(pwd)/terminator/config ~/.config/terminator/config
@@ -28,6 +29,7 @@ DeployTerminator() {
 
 DeployTint2() {
     echo -e "${C_GREEN}* tint2${C_RESET}"
+    sudo apt install -y tint2
     mkdir -p ~/.config/tint2
     rm ~/.config/tint2/tint2rc
     ln -sv $(pwd)/tint2/tint2rc ~/.config/tint2/tint2rc
@@ -35,6 +37,7 @@ DeployTint2() {
 
 DeployI3() {
     echo -e "${C_GREEN}* i3${C_RESET}"
+    sudo apt install -y i3 j4-dmenu-desktop clipit alsa-utils
     mkdir -p ~/.i3
     rm ~/.i3/config
     ln -sv $(pwd)/i3/lock.sh ~/.i3/lock.sh
@@ -43,9 +46,34 @@ DeployI3() {
 
 DeployNeoVim() {
     echo -e "${C_GREEN}* neovim${C_RESET}"
+    sudo apt install -y neovim
     mkdir -p ~/.config/nvim
     rm ~/.config/nvim/init.vim
     ln -sv $(pwd)/neovim/init.vim ~/.config/nvim/init.vim
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    vim +'PlugInstall --sync' +qa
+}
+
+DeployRbenv() {
+    echo -e "${C_GREEN}* rbenv${C_RESET}"
+    # Dependencies for building ruby
+    sudo apt install -y libssl-dev libreadline-dev zlib1g-dev
+    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+    mkdir ~/.rbenv/plugins
+    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+    # Install last stable version
+    local last_stable=$(rbenv install -l | rg "\s+\d+\.\d+\.\d+$" | tail -1)
+    rbenv install $last_stable
+    rbenv global $last_stable
+}
+
+DeployZsh() {
+  sudo apt install zsh
+  sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  rm ~/.zshrc
+  ln -sv $(pwd)/zsh/zshrc ~/.zshrc
+  rm ~/.oh-my-zsh/themes/abodelot.zsh-theme
+  ln -sv $(pwd)/zsh/abodelot.zsh-theme ~/.oh-my-zsh/themes/abodelot.zsh-theme
 }
 
 # Parse args
@@ -56,9 +84,10 @@ case $1 in
         DeployBash
         DeployGit
         DeployI3
+        DeployNeoVim
+        DeployRbenv
         DeployTint2
-        DeployTerminator
-        DeployNeoVim;;
+        DeployTerminator;;
     'bash')
         DeployBash;;
     'git')
@@ -71,7 +100,10 @@ case $1 in
         DeployTerminator;;
     'nvim')
         DeployNeoVim;;
+    'rbenv')
+        DeployRbenv;;
+    'zsh')
+        DeployZsh;;
     *)
-        echo "Usage: $0 {all|bash|git|i3|tint2|terminator|nvim}"
+        echo "Usage: $0 {all|bash|git|i3|rbenv|tint2|terminator|nvim|zsh}"
 esac
-

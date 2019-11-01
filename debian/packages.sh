@@ -1,5 +1,3 @@
-apt install \
-  zsh git neovim build-essential valgrind \ # dev
-  terminator tree \ # utils
-  i3 j4-dmenu-desktop clipit alsa-utils \ # desktop
-  evince gimp chromium thunar # apps
+#!/bin/sh
+
+apt install build-essential valgrind tree curl ripgrep evince gimp chromium thunar arandr
