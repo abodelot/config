@@ -79,6 +79,19 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# Rbenv
+export EDITOR=nvim
+
+## Ruby
+
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+alias rails='bundle exec rails'
+alias rake='bundle exec rake'
+alias rspec='bundle exec rspec'
+alias rubocop='bundle exec rubocop'
+
+## Node (nvm)
+
+export NVM_DIR="$HOME/.nvm"
+source "$NVM_DIR/nvm.sh"

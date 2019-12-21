@@ -122,13 +122,10 @@ export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
 # Ruby on Rails
 # ------------------------------------------------------------------------------
 
-export RAILS_LOGGER=default
-
-# aliases
-alias rake='bundle exec rake'
 alias rails='bundle exec rails'
+alias rake='bundle exec rake'
 alias rspec='bundle exec rspec'
-alias sidekiq='bundle exec sidekiq'
+alias rubocop='bundle exec rubocop'
 
 # rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -142,11 +139,13 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
-# NodeJS
-export PATH="$PATH:/opt/node/bin"
-
 # Go
 export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/go
+
+# Node
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 eval `keychain --agents ssh --eval id_rsa --quiet`

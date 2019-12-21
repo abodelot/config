@@ -62,7 +62,8 @@ DeployRbenv() {
     mkdir ~/.rbenv/plugins
     git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
     # Install last stable version
-    local last_stable=$(rbenv install -l | rg "\s+\d+\.\d+\.\d+$" | tail -1)
+    local last_stable=$(rbenv install -l | rg "^\d+\.\d+\.\d+$" | tail -1)
+    echo -e "${C_GREEN}  Installing ruby $last_stable${C_RESET}"
     rbenv install $last_stable
     rbenv global $last_stable
 }
