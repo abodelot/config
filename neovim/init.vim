@@ -3,22 +3,51 @@
 
 " run :PlugInstall to install new plugins
 call plug#begin()
+
+" Lint engine
+Plug 'dense-analysis/ale'
 "Plug 'roxma/nvim-completion-manager'
 "Plug 'SirVer/ultisnips'
 "Plug 'honza/vim-snippets'
+
+" Display git status (+/-/~) for each line
 Plug 'airblade/vim-gitgutter'
+
+" Navigate with % key between pair characters: ', ", |, `
 Plug 'airblade/vim-matchquote'
+
 " Status bar
 Plug 'itchyny/lightline.vim'
+
 " Filepath fuzzy search
 Plug 'ctrlpvim/ctrlp.vim'
-" Display number of search matches
+
+" Display number of search matches below the status bar
 Plug 'google/vim-searchindex'
+
+" Buffer manager, use <leader>b to display list of open buffers
+Plug 'jeetsukumaran/vim-buffergator'
+
+" Search utilities (see config)
 Plug 'mhinz/vim-grepper'
+
 " Syntax highlight for VueJS components
 Plug 'posva/vim-vue'
+
+" Toggle comments
 Plug 'scrooloose/nerdcommenter'
+
+" File tree
+Plug 'preservim/nerdtree'
+
+Plug 'thoughtbot/vim-rspec'
+
+" git commands
 Plug 'tpope/vim-fugitive'
+
+" Surrounding pair characters helper
+Plug 'tpope/vim-surround'
+
 call plug#end()
 
 " Enable 256 colors in terminal
@@ -46,11 +75,13 @@ autocmd Filetype vue setlocal ts=2 sts=2 sw=2
 autocmd Filetype vuejs setlocal ts=2 sts=2 sw=2
 autocmd Filetype css setlocal ts=2 sts=2 sw=2
 autocmd Filetype scss setlocal ts=2 sts=2 sw=2
-autocmd Filetype sh setlocal ts=2 sts=2 sw=2
 autocmd Filetype coffee setlocal ts=2 sts=2 sw=2
 
 " .mjs => javascript node module
 au BufRead *.mjs setf javascript
+
+" .axlsx => ruby template
+au BufRead *.axlsx setf ruby
 
 set hidden
 
@@ -173,6 +204,16 @@ nmap <Space>{ ysiw{
 let g:closetag_filenames = "*.html,*.xml,*.erb"
 
 "-------------------------------------------------------------------------------
+" ale: https://github.com/dense-analysis/ale
+" Linter configuration
+"-------------------------------------------------------------------------------
+
+let g:ale_linters = {
+  \ 'javascript': ['eslint'],
+  \ 'ruby': ['rubocop'],
+  \ }
+
+"-------------------------------------------------------------------------------
 " lightline: https://github.com/itchyny/lightline.vim
 " Display a status bar below editor
 "-------------------------------------------------------------------------------
@@ -182,7 +223,7 @@ let g:lightline = {
   \   'filename': 'LightLineFilename'
   \ }
   \ }
-" Display current file fullpath
+" Display fullpath for current file, instead of filename only
 function! LightLineFilename()
   return expand('%')
 endfunction
@@ -193,9 +234,13 @@ endfunction
 "-------------------------------------------------------------------------------
 
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|node_modules|coverage|obj)$',
+  \ 'dir':  '\v[\/](\.git|node_modules|coverage|obj|tmp)$',
   \ 'file': '\v\.(o)$',
   \ }
+
+" no limit, useful for large projects
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=40
 
 " -----------------------------------------------------------------------------
 " vim-grepper: https://github.com/mhinz/vim-grepper
@@ -211,12 +256,25 @@ let g:grepper.quickfix = 0
 :autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
 
 "-------------------------------------------------------------------------------
-" nerd commenter: https://github.com/scrooloose/nerdcommenter
+" nerd commenter
 " Toggle comments with <leader> + c + <space>
 "-------------------------------------------------------------------------------
 
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
+" FIXME: F2 does not work
+noremap <F2> :call NERDComment(0,"toggle")<CR>
+
+"-------------------------------------------------------------------------------
+" nerd tree: https://github.com/preservim/nerdtree
+" Ctrl+t to toggle
+" Navigate with j/k, open dir/file with o
+"-------------------------------------------------------------------------------
+
+map <C-t> :NERDTreeToggle<CR>
 
 "-------------------------------------------------------------------------------
 " git-gutter: https://github.com/airblade/vim-gitgutter
@@ -229,3 +287,10 @@ highlight GitGutterAdd ctermfg=2
 highlight GitGutterChange ctermfg=3
 highlight GitGutterDelete ctermfg=1
 highlight GitGutterChangeDelete ctermfg=4
+
+"-------------------------------------------------------------------------------
+" vim-rspec: https://github.com/thoughtbot/vim-rspec
+"-------------------------------------------------------------------------------
+
+" FIXME: use bundle exec, zsh alias doesn't work
+map <F3> :call RunNearestSpec()<CR>
