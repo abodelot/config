@@ -47,7 +47,7 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -79,19 +79,40 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+## Shell
+
 export EDITOR=nvim
 
-## Ruby
+# Command completion for newly installed packages
+zstyle ':completion:*' rehash true
 
+# Ctrl+U deletes from begining of line to cursor
+bindkey \^U backward-kill-line
+
+# Copy/paste
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+
+
+## Ruby/Rails (rbenv)
+
+# Rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# Rails
 alias rails='bundle exec rails'
 alias rake='bundle exec rake'
 alias rspec='bundle exec rspec'
 alias rubocop='bundle exec rubocop'
+# Open last migration file
+alias vim_last_migration='ls db/migrate/* | tail -n1 | xargs vim'
 
-## Node (nvm)
+# Rspec
+alias 'rspec-desc'='rspec -f d --color --dry-run'
+
+
+## Node
 
 export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"

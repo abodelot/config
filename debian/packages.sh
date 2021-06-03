@@ -1,3 +1,7 @@
 #!/bin/sh
 
-apt install build-essential valgrind tree curl ripgrep evince gimp chromium thunar arandr lm-sensors
+# dev
+apt install build-essential valgrind tree curl jq ripgrep
+
+# desktop
+apt install evince gimp thunar arandr lm-sensors pavucontrol xcwd

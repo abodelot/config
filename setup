@@ -37,7 +37,7 @@ DeployTint2() {
 
 DeployI3() {
     echo -e "${C_GREEN}* i3${C_RESET}"
-    sudo apt install -y i3 j4-dmenu-desktop clipit alsa-utils
+    sudo apt install -y i3 j4-dmenu-desktop clipit pasystray alsa-utils nitrogen
     mkdir -p ~/.i3
     rm ~/.i3/config
     ln -sv $(pwd)/i3/lock.sh ~/.i3/lock.sh

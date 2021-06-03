@@ -4,6 +4,10 @@
 " run :PlugInstall to install new plugins
 call plug#begin()
 
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'roxma/nvim-yarp'
+" Plug 'roxma/vim-hug-neovim-rpc'
+
 " Lint engine
 Plug 'dense-analysis/ale'
 "Plug 'roxma/nvim-completion-manager'
@@ -71,6 +75,7 @@ autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype eruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType javascriptreact setlocal sw=2 ts=2 sts=2
 autocmd Filetype vue setlocal ts=2 sts=2 sw=2
 autocmd Filetype vuejs setlocal ts=2 sts=2 sw=2
 autocmd Filetype css setlocal ts=2 sts=2 sw=2
@@ -123,6 +128,9 @@ set updatetime=500
 " Copy to system clipboard in addition to vim clipboard
 set clipboard+=unnamedplus
 
+" Disable swap files
+set noswapfile
+
 " Keybindings
 " ------------------------------------------------------------------------------
 
@@ -145,22 +153,6 @@ vnoremap x "+x
 
 nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
-
-" Tab completion
-" will insert tab at beginning of line,
-" will use completion if not at beginning
-set wildmode=list:longest,list:full
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <S-Tab> <c-n>
 
 " Fill rest of line with characters
 function! FillLine(str)
@@ -212,6 +204,10 @@ let g:ale_linters = {
   \ 'javascript': ['eslint'],
   \ 'ruby': ['rubocop'],
   \ }
+
+let g:ale_comletion_enabled = 1
+
+let g:ale_comletion_autoimport = 1
 
 "-------------------------------------------------------------------------------
 " lightline: https://github.com/itchyny/lightline.vim
@@ -294,3 +290,15 @@ highlight GitGutterChangeDelete ctermfg=4
 
 " FIXME: use bundle exec, zsh alias doesn't work
 map <F3> :call RunNearestSpec()<CR>
+
+"-------------------------------------------------------------------------------
+" deoplete
+"-------------------------------------------------------------------------------
+
+let g:deoplete#enable_at_startup = 1
+
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+endfunction
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
