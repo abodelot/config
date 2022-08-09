@@ -50,17 +50,19 @@ DeployNeoVim() {
     mkdir -p ~/.config/nvim
     rm ~/.config/nvim/init.vim
     ln -sv $(pwd)/neovim/init.vim ~/.config/nvim/init.vim
+    ln -sv $(pwd)/neovim/coc-settings.json ~/.config/nvim/coc-settings.json
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim +'PlugInstall --sync' +qa
 }
 
 DeployRbenv() {
     echo -e "${C_GREEN}* rbenv${C_RESET}"
-    # Dependencies for building ruby
-    sudo apt install -y libssl-dev libreadline-dev zlib1g-dev
-    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-    mkdir ~/.rbenv/plugins
-    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+    # Rbenv + Dependencies for building ruby
+    sudo apt install -y rbenv libssl-dev libreadline-dev zlib1g-dev
+
+    mkdir -p "$(rbenv root)"/plugins
+    git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+
     # Install last stable version
     local last_stable=$(rbenv install -l | rg "^\d+\.\d+\.\d+$" | tail -1)
     echo -e "${C_GREEN}  Installing ruby $last_stable${C_RESET}"

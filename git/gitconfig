@@ -11,7 +11,15 @@
     fp = fetch -p
     sync = "!sh -c 'git fetch && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)' -"
     hist = log --graph --pretty=format:'%C(red)%h%C(yellow)%d %C(reset)- %C(bold blue)%an %C(reset)- %C(green)%cr%C(reset)\n%s ' --abbrev-commit
+    rbdev = pull origin develop --rebase
     st = status -sb
     wdiff = diff --word-diff=color
 [push]
     default = current
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+[interactive]
+    diffFilter = delta --color-only
