@@ -17,6 +17,7 @@ set expandtab
 " 2 spaces for ruby/web
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
+autocmd Filetype crystal setlocal ts=2 sts=2 sw=2
 autocmd Filetype eruby setlocal ts=2 sts=2 sw=2           " .erb
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2      " .js
 autocmd Filetype typescript setlocal ts=2 sts=2 sw=2      " .ts
@@ -76,13 +77,15 @@ set autowriteall
 " Remove trailing whitespaces
 autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
-
 "-------------------------------------------------------------------------------
 " Key bindings
 "-------------------------------------------------------------------------------
 
 " Use <space> as Leader key
 let mapleader = " "
+
+" Ctrl+z: undo
+noremap <C-z> u
 
 " Ctrl+jklm: Navigate between layouts
 nnoremap <C-j> <C-W><C-J>
@@ -107,10 +110,8 @@ xnoremap ' c'<C-r>"'<Esc>
 xnoremap " c"<C-r>""<Esc>
 xnoremap ( c(<C-r>")<Esc>
 
-" Do not copy when deleting with 'd'
-nnoremap <leader>d "_d
-xnoremap <leader>d "_d
-xnoremap <leader>p "_dP
+" Go back to previous file
+nnoremap <C-p> :b#<CR>
 
 "-------------------------------------------------------------------------------
 " Plugins
@@ -121,22 +122,33 @@ xnoremap <leader>p "_dP
 call plug#begin()
 
 " Navigation
-Plug 'ctrlpvim/ctrlp.vim' " search files
-Plug 'jeetsukumaran/vim-buffergator' " browse open buffers
 Plug 'mg979/vim-visual-multi' " multi-cursor: Ctrl+Up/Ctrl+Down
-Plug 'mhinz/vim-grepper' " search content
 Plug 'preservim/nerdtree' " file tree
+Plug 'ggandor/leap.nvim'
+
+" Telescope: search files (Ctrl+f), search content (Ctrl+g)
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+
+" Home screen
+Plug 'goolord/alpha-nvim'
 
 " UI
 Plug 'norcalli/nvim-colorizer.lua' " color for color codes
-Plug 'ryanoasis/vim-devicons' " font icons
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'itchyny/lightline.vim' " status bar
 
 " Edit
+Plug 'github/copilot.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " LSP support
 Plug 'scrooloose/nerdcommenter' " toggle comments
 Plug 'vim-scripts/ReplaceWithRegister' " replace selection with register content: gr, gr{motion}
+
+" Lang support
 Plug 'leafgarland/typescript-vim' " TS support
+Plug 'thoughtbot/vim-rspec' " Rspec
+Plug 'vim-crystal/vim-crystal'
+Plug 'rhysd/vim-clang-format'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -144,8 +156,15 @@ Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
+
 "-------------------------------------------------------------------------------
-" [Edit] nerdcommenter: easy toggle for comments
+" [alpha-nvim]
+"-------------------------------------------------------------------------------
+
+lua require'alpha'.setup(require'alpha.themes.startify'.config)
+
+"-------------------------------------------------------------------------------
+" [nerdcommenter] easy toggle for comments
 "-------------------------------------------------------------------------------
 
 " Align comments on the left instead of following code indentation
@@ -158,7 +177,7 @@ let g:NERDSpaceDelims = 1
 noremap <silent> <F1> :call nerdcommenter#Comment(0, "toggle")<CR>
 
 "-------------------------------------------------------------------------------
-" [Edit] coc.nvim: language server protocol
+" [coc.nvim] language server protocol
 "-------------------------------------------------------------------------------
 
 " Tab, Shift+Tab: select suggestion
@@ -190,6 +209,12 @@ endfunction
 nnoremap <Leader>d :call ShowDocumentation()<CR>
 
 "-------------------------------------------------------------------------------
+" [Edit] vim-clang-format
+"-------------------------------------------------------------------------------
+
+autocmd FileType c ClangFormatAutoEnable
+
+"-------------------------------------------------------------------------------
 " [Git] vim-fugitive: git integration
 "-------------------------------------------------------------------------------
 
@@ -214,6 +239,8 @@ highlight GitGutterChangeDelete guifg=#ff2222 ctermfg=4
 "-------------------------------------------------------------------------------
 
 lua require'colorizer'.setup()
+
+lua require('leap').set_default_keymaps()
 
 "-------------------------------------------------------------------------------
 " [UI] lightline.vim: Display a nice status bar below editor
@@ -252,30 +279,20 @@ let g:lightline = {
  \ }
 
 "-------------------------------------------------------------------------------
-" [Navigation] ctrl+p: files fuzzy finder
+" [telescope] Search files, live grep
 "-------------------------------------------------------------------------------
 
-" Ctrl+p: open prompt, search for files
+" Ignore some dirs, do not ignore dot files
+lua require('telescope').setup{ defaults = { file_ignore_patterns = {".git/", "^obj/", "^dist/", "^vendor/"} }, pickers = { find_files = { hidden = true } } }
 
-" Igore some files and directories
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|node_modules|coverage|obj|tmp|vendor|dist)$',
-  \ 'file': '\v\.(o)$',
-  \ }
+" Find files using Telescope command-line sugar.
+nnoremap <C-f> <cmd>Telescope find_files<cr>
+nnoremap <C-g> <cmd>Telescope live_grep<cr>
+nnoremap <C-b> <cmd>Telescope buffers<cr>
+" nnoremap <C-h> <cmd>Telescope help_tags<cr>
 
-" Do not ignore dot files
-let g:ctrlp_dotfiles = 1
-
-" Handle big projects
-let g:ctrlp_max_files = 100000
-let g:ctrlp_max_depth = 40
-
-"-------------------------------------------------------------------------------
-" [Navigation] vim-bufergator: help navigate through buffers
-"-------------------------------------------------------------------------------
-
-" Ctrl+b: display list of open buffers
-nnoremap <silent> <C-b> :BuffergatorToggle<CR>
+" f: search selected text
+vnoremap f "zy:Telescope live_grep default_text=<C-r>z<cr>
 
 " ------------------------------------------------------------------------------
 " [Navigation] nerdtree: file browser in sidebar
@@ -283,29 +300,6 @@ nnoremap <silent> <C-b> :BuffergatorToggle<CR>
 
 " Ctrl+t to toggle, navigate with j/k, open dir/file with o
 map <silent> <C-t> :NERDTreeToggle<CR>
-
-" ------------------------------------------------------------------------------
-" [Navigation] vim-grepper: search accross files
-" ------------------------------------------------------------------------------
-
-" Ctrl+f: Open prompt, search content accross files
-nnoremap <C-f> :Grepper -tool rg<cr>
-
-" Allow whitespaces in query
-let g:grepper = {}
-let g:grepper.prompt_quote = 1
-
-" Custom prompt
-let g:grepper.prompt_text = 'Search: '
-
-" Highlight results
-let g:grepper.highlight = 1
-
-" Do not use regexp in search query
-let g:grepper.rg = {'grepprg': 'rg --vimgrep --no-heading --fixed-strings'}
-
-" f: search visual selection
-xnoremap f <plug>(GrepperOperator)
 
 " ------------------------------------------------------------------------------
 " Color scheme
